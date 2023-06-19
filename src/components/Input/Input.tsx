@@ -66,7 +66,7 @@ export const Input: React.FC<inputProps> = ({ type, labelName }) => {
             placeholder={labelName}
             onFocus={() => setToggleInputFocus(true)}
             onBlur={() => setToggleInputFocus(false)}
-          ></input>
+          />
         ) : (
           <input
             type={type}
@@ -74,7 +74,7 @@ export const Input: React.FC<inputProps> = ({ type, labelName }) => {
             placeholder={labelName}
             onFocus={() => setToggleInputFocus(true)}
             onBlur={() => setToggleInputFocus(false)}
-          ></input>
+          />
         )}
         <div className={styles.eyeIcon}>
           {labelName.includes('Password') && renderPasswordIconToggle()}

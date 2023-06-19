@@ -1,13 +1,30 @@
-import React from 'react';
+import React, { MouseEventHandler, ReactNode } from 'react';
+import styles from './Button.module.scss';
+import { Spinner } from '../Spinner/Spinner';
 
-interface ButtonProps {
-  buttonText: string;
+export interface ButtonProps {
+  type?: 'primary';
+  children: React.ReactNode;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
+  fullWidth?: boolean;
+  className?: boolean;
+  ariaLabel?: boolean;
+  dataTestId?: string;
+  isLoading?: boolean;
 }
-
-export const Button: React.FC<ButtonProps> = ({ buttonText }) => {
+export const Button: React.FC<ButtonProps> = ({
+  children,
+  type = 'primary',
+  fullWidth = false,
+  className = '',
+  ariaLabel,
+  dataTestId,
+  isLoading,
+  onClick,
+}) => {
   return (
-    <div>
-      <h1>Button</h1>
-    </div>
+    <button data-testid={dataTestId} className={styles.button} onClick={onClick}>
+      {isLoading ? <Spinner /> : children}
+    </button>
   );
 };

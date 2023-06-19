@@ -10,8 +10,30 @@
   align-items: center;
   background-color: map-get($map: $milk-palette, $key: 0);
 
-  .signinFormInputContainer {
+  .signinFormHeading {
+    font-size: 24px;
+    font-weight: 900;
+    padding-bottom: 48px;
+  }
+  .signinFormInputContainer{
     width: calc(100% - $input-component-width-padding);
+
+    .signinUtilities {
+      display: flex;
+      justify-content: space-between;
+
+      .signinRememberContainer {
+        input[type=checkbox] {
+          margin-right: 8px;
+          transform: scale(1.2)
+        }
+      }
+
+      p {
+        color: map-get($map: $green-palette, $key: 900);
+        font-weight: 400;
+      }
+    }
   }
 
   .signinFormNameContainer {
