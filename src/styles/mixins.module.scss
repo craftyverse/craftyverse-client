@@ -1,0 +1,11 @@
+@import './variables.module.scss';
+
+@mixin breakpoint($screen-size) {
+  $screens: map-get($breakpoints, $screen-size);
+
+  @if $screens {
+    @media (#{$screens}) {
+      @content
+    }
+  }
+}
