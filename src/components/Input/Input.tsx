@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { FocusEventHandler, useState } from 'react';
 import styles from './Input.module.scss';
 import iconSet from '../../icons/selection.json';
 import IcomoonReact from 'icomoon-react';
@@ -6,6 +6,10 @@ import IcomoonReact from 'icomoon-react';
 export interface inputProps {
   type: 'text' | 'email' | 'password' | 'checkbox';
   labelName: string;
+  inputErrorMessage?: string;
+  onBlur?: FocusEventHandler<HTMLInputElement>;
+  onFocus?: FocusEventHandler<HTMLInputElement>;
+  toggleInputFocus?: boolean;
 }
 
 const renderInputIcons = (type: string, labelName: string) => {
@@ -22,9 +26,15 @@ const renderInputIcons = (type: string, labelName: string) => {
   }
 };
 
-export const Input: React.FC<inputProps> = ({ type, labelName }) => {
+export const Input: React.FC<inputProps> = ({
+  type,
+  labelName,
+  inputErrorMessage,
+  onBlur,
+  onFocus,
+  toggleInputFocus,
+}) => {
   const [toggleShowPassword, setToggleShowPassword] = useState<boolean>(false);
-  const [toggleInputFocus, setToggleInputFocus] = useState<boolean>(false);
 
   const handleTogglePassword = () => {
     setToggleShowPassword(!toggleShowPassword);
@@ -57,29 +67,34 @@ export const Input: React.FC<inputProps> = ({ type, labelName }) => {
   return (
     <div className={styles.inputContainer}>
       <label htmlFor={labelName}>{labelName}</label>
-      <div className={`${toggleInputFocus && styles.activeInputElement} ${styles.inputElement}`}>
+      <div
+        className={`${toggleInputFocus && styles.activeInputElement} ${styles.inputElement} ${
+          inputErrorMessage && styles.errorInputElement
+        }`}
+      >
         {renderInputIcons(type, labelName)}
         {toggleShowPassword && type === 'password' ? (
           <input
             type="text"
             name={labelName}
             placeholder={labelName}
-            onFocus={() => setToggleInputFocus(true)}
-            onBlur={() => setToggleInputFocus(false)}
+            onFocus={onFocus}
+            onBlur={onBlur}
           />
         ) : (
           <input
             type={type}
             name={labelName}
             placeholder={labelName}
-            onFocus={() => setToggleInputFocus(true)}
-            onBlur={() => setToggleInputFocus(false)}
+            onFocus={onFocus}
+            onBlur={onBlur}
           />
         )}
         <div className={styles.eyeIcon}>
           {labelName.includes('Password') && renderPasswordIconToggle()}
         </div>
       </div>
+      <p className={styles.inputErrorMsg}>{inputErrorMessage}</p>
     </div>
   );
 };

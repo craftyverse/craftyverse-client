@@ -31,8 +31,12 @@
 
       p {
         color: map-get($map: $green-palette, $key: 900);
-        font-weight: 400;
+        font-weight: 700;
       }
+    }
+
+    .signupCta {
+      padding-top: 24px;
     }
   }
 

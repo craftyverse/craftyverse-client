@@ -4,17 +4,21 @@
 .inputContainer {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 8px;
   padding-bottom: 36px;
   min-width: 49%; 
   .activeInputElement {
-    border: 1px solid $logo-main !important;
+    border: 2px solid map-get($map: $green-palette, $key: 900) !important;
+  }
+
+  .errorInputElement {
+    border: 2px solid $error-msg !important;
   }
 
   .inputElement {
     display: flex;
     align-items: center;
-    border: 1px solid map-get($map: $grey-palette, $key: 300);
+    border: 2px solid map-get($map: $grey-palette, $key: 300);
 
     border-radius: 15px;
     height: 56px;
@@ -38,5 +42,11 @@
       width: calc(100% - $input-width-padding);
       outline: none;
     }
+  }
+
+  .inputErrorMsg {
+    color: $error-msg;
+    font-size: 12px;
+    height: 8px;
   }
 }
