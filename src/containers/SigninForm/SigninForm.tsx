@@ -1,14 +1,25 @@
-import React, { FocusEventHandler, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Input } from '../../components/Input';
 import styles from './SigninForm.module.scss';
 import { Button } from '../../components/Button';
 import { Link } from 'react-router-dom';
 
 export const SigninForm = () => {
+  const [userSigninData, setUserSigninData] = useState<{
+    email: string;
+    password: string;
+  }>({
+    email: '',
+    password: '',
+  });
   const [userEmail, setUserEmail] = useState<string>('');
+  const [userPassword, setUserPassword] = useState<string>('');
   const [emailInputErrorMsg, setEmailInputErrorMsg] = useState<string>('');
+  const [passwordInputErrorMsg, setPasswordInputErrorMsg] = useState<string>('');
+  const [isLoading, setLoading] = useState<boolean>(false);
+
   const [toggleEmailInputFocus, setToggleEmailInputFocus] = useState<boolean>(false);
-  const [togglePasswordInputFocus, setTogglePasswordEmailInputFocus] = useState<boolean>(false);
+  const [togglePasswordInputFocus, setTogglePasswordInputFocus] = useState<boolean>(false);
 
   const invalidEmailCharacters = /[!#$%&~\\]/g;
   const checkTrailingDot = /\.$/;
@@ -38,9 +49,40 @@ export const SigninForm = () => {
     setToggleEmailInputFocus(false);
   };
 
+  const handleEmailChange = (event: any) => {
+    setEmailInputErrorMsg('');
+  };
+
+  const handlePasswordChange = (event: any) => {
+    setPasswordInputErrorMsg('');
+  };
+
+  const handlePasswordBlur = (event: any) => {
+    setUserPassword(event.target.value);
+    setTogglePasswordInputFocus(false);
+  };
+
+  const handleSubmit = () => {
+    if (userSigninData['email'] === '') {
+      setEmailInputErrorMsg('Please enter an email.');
+    }
+
+    if (userSigninData['password'] === '') {
+      setPasswordInputErrorMsg('please enter a password.');
+    }
+
+    // call backend
+
+    setLoading(false);
+  };
+
   useEffect(() => {
     validateEmail(userEmail);
-  }, [userEmail]);
+    setUserSigninData({
+      email: userEmail,
+      password: userPassword,
+    });
+  }, [userEmail, userPassword]);
 
   return (
     <div className={styles.signinFormContainer}>
@@ -52,14 +94,17 @@ export const SigninForm = () => {
           inputErrorMessage={emailInputErrorMsg}
           onFocus={() => setToggleEmailInputFocus(true)}
           onBlur={handleEmailBlur}
+          onChange={handleEmailChange}
           toggleInputFocus={toggleEmailInputFocus}
         />
         <Input
           type="password"
           labelName="Your Password"
-          onFocus={() => setTogglePasswordEmailInputFocus(true)}
-          onBlur={() => setTogglePasswordEmailInputFocus(false)}
+          onFocus={() => setTogglePasswordInputFocus(true)}
+          onBlur={handlePasswordBlur}
+          onChange={handlePasswordChange}
           toggleInputFocus={togglePasswordInputFocus}
+          inputErrorMessage={passwordInputErrorMsg}
         />
         <div className={styles.signinUtilities}>
           <div className={styles.signinRememberContainer}>
@@ -68,12 +113,13 @@ export const SigninForm = () => {
           </div>
           <p>Forgot Password?</p>
         </div>
-        <Button>
-          <p>Sign in</p>
+        <Button onClick={handleSubmit} isLoading={isLoading}>
+          <p className={styles.buttonText}>Sign in</p>
         </Button>
         <p className={styles.signupCta}>
           Already have an account? <Link to="/signup">Get started</Link>
         </p>
+        <p>{JSON.stringify(userSigninData)}</p>
       </div>
     </div>
   );

@@ -9,6 +9,7 @@ export interface inputProps {
   inputErrorMessage?: string;
   onBlur?: FocusEventHandler<HTMLInputElement>;
   onFocus?: FocusEventHandler<HTMLInputElement>;
+  onChange?: FocusEventHandler<HTMLInputElement>;
   toggleInputFocus?: boolean;
 }
 
@@ -32,6 +33,7 @@ export const Input: React.FC<inputProps> = ({
   inputErrorMessage,
   onBlur,
   onFocus,
+  onChange,
   toggleInputFocus,
 }) => {
   const [toggleShowPassword, setToggleShowPassword] = useState<boolean>(false);
@@ -80,6 +82,7 @@ export const Input: React.FC<inputProps> = ({
             placeholder={labelName}
             onFocus={onFocus}
             onBlur={onBlur}
+            onChange={onChange}
           />
         ) : (
           <input
@@ -88,6 +91,7 @@ export const Input: React.FC<inputProps> = ({
             placeholder={labelName}
             onFocus={onFocus}
             onBlur={onBlur}
+            onChange={onChange}
           />
         )}
         <div className={styles.eyeIcon}>
