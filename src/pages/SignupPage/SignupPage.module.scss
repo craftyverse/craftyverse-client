@@ -1,0 +1,11 @@
+@import "../../styles/pallate.module.scss";
+.signupPageContainer {
+  background-color: map-get($map: $milk-palette, $key: 200);
+  height: 100vh;
+  width: 100vw;
+
+  .authContainer {
+    display: flex;
+    justify-content: end;
+  }
+}

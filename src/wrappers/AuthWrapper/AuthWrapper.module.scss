@@ -6,4 +6,10 @@
   width: 100vw;
   justify-content: space-between;
   align-items: center;
+
+  .authLogoContainer {
+    display: flex;
+    width: 50vw;
+    justify-content: center;
+  }
 }

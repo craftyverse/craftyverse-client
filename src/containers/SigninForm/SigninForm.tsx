@@ -14,8 +14,10 @@ export const SigninForm = () => {
   });
   const [userEmail, setUserEmail] = useState<string>('');
   const [userPassword, setUserPassword] = useState<string>('');
+
   const [emailInputErrorMsg, setEmailInputErrorMsg] = useState<string>('');
   const [passwordInputErrorMsg, setPasswordInputErrorMsg] = useState<string>('');
+
   const [isLoading, setLoading] = useState<boolean>(false);
 
   const [toggleEmailInputFocus, setToggleEmailInputFocus] = useState<boolean>(false);
@@ -49,11 +51,11 @@ export const SigninForm = () => {
     setToggleEmailInputFocus(false);
   };
 
-  const handleEmailChange = (event: any) => {
+  const handleEmailChange = () => {
     setEmailInputErrorMsg('');
   };
 
-  const handlePasswordChange = (event: any) => {
+  const handlePasswordChange = () => {
     setPasswordInputErrorMsg('');
   };
 
