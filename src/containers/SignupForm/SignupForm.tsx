@@ -1,21 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Input } from '../../components/Input';
 import styles from './SignupForm.module.scss';
 import { Button } from '../../components/Button';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 export const SignupForm = () => {
-  const [userSigninData, setUserSigninData] = useState<{
-    firstName: string;
-    lastName: string;
-    email: string;
-    password: string;
-    confirmPassword: string;
+  const navigate = useNavigate();
+  const [userSignupData, setUserSigninData] = useState<{
+    userFirstName: string;
+    userLastName: string;
+    userEmail: string;
+    userPassword: string;
+    userConfirmPassword?: string;
   }>({
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
+    userFirstName: '',
+    userLastName: '',
+    userEmail: '',
+    userPassword: '',
+    userConfirmPassword: '',
   });
 
   const [isLoading, setLoading] = useState<boolean>(false);
@@ -81,6 +84,12 @@ export const SignupForm = () => {
     }
   };
 
+  const validateUserPassword = (input: string): void => {
+    if (!input) {
+      setPasswordInputErrorMsg('');
+    }
+  };
+
   const validateUserConfirmPassword = (input: string): void => {
     if (!input) {
       setConfirmPasswordInputErrorMsg('');
@@ -132,25 +141,35 @@ export const SignupForm = () => {
     setConfirmPasswordInputErrorMsg('');
   };
 
-  const handleSubmit = () => {
-    if (userSigninData['firstName'] === '') {
+  const handleSubmit = async () => {
+    setLoading(true);
+
+    if (userSignupData['userFirstName'] === '') {
       setFirstNameInputErrorMsg('Please enter your first name');
     }
 
-    if (userSigninData['lastName'] === '') {
+    if (userSignupData['userLastName'] === '') {
       setLastNameInputErrorMsg('Please enter your last name.');
     }
 
-    if (userSigninData['email'] === '') {
+    if (userSignupData['userEmail'] === '') {
       setEmailInputErrorMsg('Please enter an email.');
     }
 
-    if (userSigninData['password'] === '') {
+    if (userSignupData['userPassword'] === '') {
       setPasswordInputErrorMsg('please enter a password.');
     }
 
-    if (userSigninData['confirmPassword'] === '') {
+    if (userSignupData['userConfirmPassword'] === '') {
       setConfirmPasswordInputErrorMsg('Please re-enter your password');
+    }
+
+    try {
+      await axios.post('/api/users/signup', userSignupData);
+      const path = '/onboarding';
+      navigate(path);
+    } catch (error) {
+      console.log(error);
     }
 
     setLoading(false);
@@ -160,13 +179,14 @@ export const SignupForm = () => {
     validateUserFirstName(userFirstName);
     validateUserLastName(userLastName);
     validateUserEmail(userEmail);
+    validateUserPassword(userPassword);
     validateUserConfirmPassword(userConfirmPassword);
     setUserSigninData({
-      firstName: userFirstName,
-      lastName: userLastName,
-      email: userEmail,
-      password: userPassword,
-      confirmPassword: userConfirmPassword,
+      userFirstName: userFirstName,
+      userLastName: userLastName,
+      userEmail: userEmail,
+      userPassword: userPassword,
+      userConfirmPassword: userConfirmPassword,
     });
   }, [userFirstName, userLastName, userEmail, userPassword, userConfirmPassword]);
 
@@ -224,6 +244,9 @@ export const SignupForm = () => {
         <Button onClick={handleSubmit} isLoading={isLoading}>
           <p className={styles.buttonText}>Sign in</p>
         </Button>
+        <p className={styles.signinRedirectLink}>
+          Already have an account? <Link to={'/signin'}>Sign in</Link>
+        </p>
       </div>
     </div>
   );

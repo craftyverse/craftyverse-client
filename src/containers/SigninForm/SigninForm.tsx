@@ -2,15 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { Input } from '../../components/Input';
 import styles from './SigninForm.module.scss';
 import { Button } from '../../components/Button';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 export const SigninForm = () => {
+  const navigate = useNavigate();
   const [userSigninData, setUserSigninData] = useState<{
-    email: string;
-    password: string;
+    userEmail: string;
+    userPassword: string;
   }>({
-    email: '',
-    password: '',
+    userEmail: '',
+    userPassword: '',
   });
   const [userEmail, setUserEmail] = useState<string>('');
   const [userPassword, setUserPassword] = useState<string>('');
@@ -64,16 +66,23 @@ export const SigninForm = () => {
     setTogglePasswordInputFocus(false);
   };
 
-  const handleSubmit = () => {
-    if (userSigninData['email'] === '') {
+  const handleSubmit = async () => {
+    if (userSigninData['userEmail'] === '') {
       setEmailInputErrorMsg('Please enter an email.');
     }
 
-    if (userSigninData['password'] === '') {
+    if (userSigninData['userPassword'] === '') {
       setPasswordInputErrorMsg('please enter a password.');
     }
 
     // call backend
+    try {
+      await axios.post('/api/users/signin', userSigninData);
+      const path = '/onboarding';
+      navigate(path);
+    } catch (error) {
+      console.log(error);
+    }
 
     setLoading(false);
   };
@@ -81,8 +90,8 @@ export const SigninForm = () => {
   useEffect(() => {
     validateEmail(userEmail);
     setUserSigninData({
-      email: userEmail,
-      password: userPassword,
+      userEmail: userEmail,
+      userPassword: userPassword,
     });
   }, [userEmail, userPassword]);
 
@@ -119,9 +128,11 @@ export const SigninForm = () => {
           <p className={styles.buttonText}>Sign in</p>
         </Button>
         <p className={styles.signupCta}>
-          Already have an account? <Link to="/signup">Get started</Link>
+          Don't have an account?{' '}
+          <Link className={styles.signupLinkCta} to="/signup">
+            Register here
+          </Link>
         </p>
-        <p>{JSON.stringify(userSigninData)}</p>
       </div>
     </div>
   );
