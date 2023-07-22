@@ -9,7 +9,7 @@
   justify-content: center;
   align-items: center;
   background-color: map-get($map: $milk-palette, $key: 0);
-  border-radius: 0 24px 0 24px;
+  border-radius: 24px 0 0 24px;
 
   .signinFormHeading {
     font-size: 24px;
@@ -34,12 +34,17 @@
         color: map-get($map: $green-palette, $key: 900);
         font-weight: 700;
       }
+
+      .forgotPasswordCta {
+        color: map-get($map: $green-palette, $key: 500);
+        text-decoration: none;
+      }
     }
 
     .signupCta {
       display: flex;
       justify-content: center;
-      color: map-get($map: $grey-palette, $key: 500);
+      color: map-get($map: $grey-palette, $key: 600);
       padding-top: 24px;
 
       .signupLinkCta {

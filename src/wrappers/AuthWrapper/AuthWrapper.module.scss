@@ -1,4 +1,7 @@
 @import '../../styles/pallate.module.scss';
+@import '../../styles/variables.module.scss';
+@import '../../styles/global.module.scss';
+
 .authWrapperContainer {
   display: flex;
   background-color: map-get($map: $milk-palette, $key: 200);
@@ -11,5 +14,11 @@
     display: flex;
     width: 50vw;
     justify-content: center;
+
+    h1 {
+      font-family: 'Pacifico', 'Arial Narrow', Arial, sans-serif;
+      font-size: 46px;
+      color: $logo-main
+    }
   }
 }

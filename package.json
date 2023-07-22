@@ -25,6 +25,7 @@
     "axios": "^1.4.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
+    "framer-motion": "^10.12.21",
     "icomoon-react": "^3.0.0",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.1",

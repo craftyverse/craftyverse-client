@@ -241,6 +241,10 @@ export const SignupForm = () => {
           toggleInputFocus={toggleConfirmPasswordInputFocus}
           inputErrorMessage={confirmPasswordInputErrorMsg}
         ></Input>
+        <div className={styles.signupFormPrivacyPolicyContainer}>
+          <input type="radio"></input>
+          <p>By proceeding, you agree to the Privacy Policy and T&Cs</p>
+        </div>
         <Button onClick={handleSubmit} isLoading={isLoading}>
           <p className={styles.buttonText}>Sign in</p>
         </Button>

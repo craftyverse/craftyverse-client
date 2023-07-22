@@ -18,7 +18,7 @@
   .inputElement {
     display: flex;
     align-items: center;
-    border: 2px solid map-get($map: $grey-palette, $key: 300);
+    border: 2px solid map-get($map: $grey-palette, $key: 500);
 
     border-radius: 15px;
     height: 56px;
