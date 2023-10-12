@@ -4,8 +4,10 @@ import styles from './SignupForm.module.scss';
 import { Button } from '../../components/Button';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import useAuth from '../../hooks/useAuth';
 
-export const SignupForm = () => {
+export const SignupForm: React.FC = () => {
+  const setCurrentUser = useAuth();
   const navigate = useNavigate();
   const [userSignupData, setUserSigninData] = useState<{
     userFirstName: string;
@@ -165,12 +167,15 @@ export const SignupForm = () => {
     }
 
     try {
-      await axios.post('/api/users/signup', userSignupData);
-      const path = '/onboarding';
+      const user = await axios.post('/api/users/signup', userSignupData);
+
+      if (user.data) {
+        setCurrentUser?.setCurrentUser(user.data);
+      }
+
+      const path = '/register-business-name';
       navigate(path);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
 
     setLoading(false);
   };
@@ -197,7 +202,7 @@ export const SignupForm = () => {
         <div className={styles.signupNamesContainer}>
           <Input
             type="text"
-            labelName="First name"
+            labelName="First Name"
             onBlur={handleFirstNameBlur}
             onFocus={() => setToggleFirstNameInputFocus(true)}
             onChange={handleFirstNameChange}
@@ -206,7 +211,7 @@ export const SignupForm = () => {
           ></Input>
           <Input
             type="text"
-            labelName="Last name"
+            labelName="Last Name"
             onBlur={handleLastNameBlur}
             onFocus={() => setToggleLastNameInputFocus(true)}
             onChange={handleLastNameChange}
@@ -246,10 +251,13 @@ export const SignupForm = () => {
           <p>By proceeding, you agree to the Privacy Policy and T&Cs</p>
         </div>
         <Button onClick={handleSubmit} isLoading={isLoading}>
-          <p className={styles.buttonText}>Sign in</p>
+          <p className={styles.buttonText}>Sign up</p>
         </Button>
         <p className={styles.signinRedirectLink}>
-          Already have an account? <Link to={'/signin'}>Sign in</Link>
+          Already have an account?{' '}
+          <Link className={styles.signinCta} to={'/signin'}>
+            Sign in
+          </Link>
         </p>
       </div>
     </div>

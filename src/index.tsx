@@ -1,6 +1,22 @@
-import ReactDOM from 'react-dom';
-import { App } from './App';
 import './styles/global.module.scss';
-import React from 'react';
+import { App } from './App';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+import { createRoot } from 'react-dom/client';
+import React from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { AuthProvider } from './context/AuthProvider';
+const container = document.getElementById('root');
+if (container) {
+  const root = createRoot(container);
+  root.render(
+    <React.StrictMode>
+      <BrowserRouter>
+        <AuthProvider>
+          <Routes>
+            <Route path="/*" element={<App />} />
+          </Routes>
+        </AuthProvider>
+      </BrowserRouter>
+    </React.StrictMode>
+  );
+}

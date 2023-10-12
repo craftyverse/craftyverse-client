@@ -2,23 +2,36 @@
 @import '../../styles/pallate.module.scss';
 @import '../../styles/variables.module.scss';
 
-.otpVerificationInputContainer {
-    display: flex;
-    column-gap: 16px;
-  .otpBox {
-    height: 56px;
-    width: 56px;
-    border: none;
-    background-color: map-get($map: $grey-palette, $key: 50);
-    border-radius: 12px;
-    outline-color: map-get($map: $green-palette, $key: 500);
-    text-align: center;
-    font-size: 24px;
-    font-weight: bold;
-    line-height: 1;
 
-    &:focus {
-      background-color: map-get($map: $grey-palette, $key: 0);
+.otpVerificationContainer {
+      width: 100%;
+
+  .otpVerificationInput {
+    display: flex;
+    column-gap: 28px;
+    padding-bottom: 16px;
+    .otpBox {
+      height: 56px;
+      width: 56px;
+      border: none;
+      background-color: map-get($map: $grey-palette, $key: 50);
+      border-radius: 12px;
+      outline-color: map-get($map: $green-palette, $key: 500);
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+      line-height: 1;
+
+      &:focus {
+        background-color: map-get($map: $grey-palette, $key: 0);
+      }
     }
   }
+
+  .otpInputErrorMsg {
+    color: $error-msg;
+    font-size: 12px;
+    height: 8px;
+  }
 }
+

@@ -1,0 +1,1 @@
+export { LocationRegistrationWrapper } from './LocationRegistrationWrapper';

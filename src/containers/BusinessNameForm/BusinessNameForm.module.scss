@@ -1,0 +1,8 @@
+@import '../../styles/pallate.module.scss';
+@import '../../styles/variables.module.scss';
+.businessNameContainer {
+  padding: 24px 0;
+  color: map-get($grey-palette, 900);
+  font-size: 24px;
+  line-height: 28px;
+}

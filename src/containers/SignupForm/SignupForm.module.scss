@@ -28,6 +28,13 @@
 
     .signinRedirectLink{
       padding-top: 16px;
+
+      .signinCta{
+        padding-left: 8px;
+        color: map-get($map: $green-palette, $key: 500);
+        cursor: pointer;
+        text-decoration: none;
+      }
     }
   }
 

@@ -6,12 +6,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Modal } from '../../components/Modal';
 import { OtpVerificationInput } from '../../components/OtpVerificationInput';
+import useAuth from '../../hooks/useAuth';
 
 const maskEmail = (email: string) => {
   return email.replace(/(\w{3})[\w.-]+@([\w.]+\w)/, '$1****@$2');
 };
 
 export const SigninForm = () => {
+  const setCurrentUser = useAuth();
   const navigate = useNavigate();
   const [userSigninData, setUserSigninData] = useState<{
     userEmail: string;
@@ -21,22 +23,31 @@ export const SigninForm = () => {
     userPassword: '',
   });
 
-  // TODO: create useState to store reset password email
-
   const [submitResetPasswordEmailData, setSubmitResetPasswordData] = useState<{
     userEmail: string;
   }>({
     userEmail: '',
   });
 
+  const [submitOtpCodeData, setSubmitOtpCodeData] = useState<{
+    userEmail: string;
+    otpString: string;
+  }>({
+    userEmail: '',
+    otpString: '',
+  });
+
+  // User input useStates
   const [userEmail, setUserEmail] = useState<string>('');
   const [userPassword, setUserPassword] = useState<string>('');
   const [userResetPasswordEmail, setUserResetPasswordEmail] = useState<string>('');
   const [userOtp, setUserOtp] = useState<string>('');
 
+  // Input error message useStates
   const [emailInputErrorMsg, setEmailInputErrorMsg] = useState<string>('');
   const [passwordInputErrorMsg, setPasswordInputErrorMsg] = useState<string>('');
   const [resetPasswordEmailErrorMsg, setResetPasswordEmailErrorMsg] = useState<string>('');
+  const [otpInputVerifyErrorMsg, setOtpInputVerifyErrorMsg] = useState<string>('');
 
   const [isLoading, setLoading] = useState<boolean>(false);
   const [isModalLoading, setModalLoading] = useState<boolean>(false);
@@ -118,12 +129,16 @@ export const SigninForm = () => {
 
     // call backend
     try {
-      await axios.post('/api/users/signin', userSigninData);
-      const path = '/onboarding';
+      const currentUser = await axios.post('/api/users/signin', userSigninData);
+
+      if (currentUser.data) {
+        setCurrentUser?.setCurrentUser(currentUser.data);
+      }
+
+      const path = '/register-business-name';
       navigate(path);
-    } catch (error) {
-      // TODO: Need to integrate Amplitude for front-end logging
-      console.log(error);
+    } catch (error: any) {
+      setPasswordInputErrorMsg(error.response.data.errors[0].message);
     }
 
     setLoading(false);
@@ -143,8 +158,28 @@ export const SigninForm = () => {
         setOpenVerifyOtpModal(true);
         setOpenModal(false);
       }
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      setResetPasswordEmailErrorMsg(error.response.data.errors[0].message);
+    }
+    setModalLoading(false);
+  };
+
+  const handleSubmitVerifyOtpCode = async () => {
+    setModalLoading(true);
+
+    if (submitOtpCodeData['otpString'] === '') {
+      setOtpInputVerifyErrorMsg('Please enter your OTP code that we have sent to your email.');
+    }
+
+    try {
+      const response = await axios.post('/api/users/verifyOtp', submitOtpCodeData);
+      if (response.status === 200) {
+        const responseData = response.data;
+        const path = `/updatePassword/${responseData.userId}`;
+        navigate(path);
+      }
+    } catch (error: any) {
+      setOtpInputVerifyErrorMsg(error.response.data.errors[0].message);
     }
 
     setModalLoading(false);
@@ -154,9 +189,11 @@ export const SigninForm = () => {
   const showModal = () => {
     setOpenModal(true);
     setResetPasswordEmailErrorMsg('');
+    setOtpInputVerifyErrorMsg('');
+    setUserOtp('');
   };
 
-  const onOtpInputChange = (value: string) => {
+  const handleOnOtpInputChange = (value: string) => {
     setUserOtp(value);
   };
 
@@ -174,6 +211,13 @@ export const SigninForm = () => {
       userEmail: userResetPasswordEmail,
     });
   }, [userResetPasswordEmail]);
+
+  useEffect(() => {
+    setSubmitOtpCodeData({
+      userEmail: userResetPasswordEmail,
+      otpString: userOtp,
+    });
+  }, [userOtp, userResetPasswordEmail]);
 
   return (
     <div className={styles.signinFormContainer}>
@@ -222,6 +266,7 @@ export const SigninForm = () => {
             title="Reset your password"
             width="500px"
             height="500px"
+            canClose={true}
           >
             <p style={{ paddingBottom: '24px', color: '#718096' }}>
               Enter the email address associated with your account and we'll send you a link to
@@ -248,6 +293,7 @@ export const SigninForm = () => {
             title="Enter verification code"
             width="500px"
             height="500px"
+            canClose={true}
           >
             <p style={{ paddingBottom: '24px', color: '#718096' }}>
               We have just sent a verification code to {maskEmail(userResetPasswordEmail)}
@@ -255,8 +301,12 @@ export const SigninForm = () => {
             <OtpVerificationInput
               codeLength={6}
               code={userOtp}
-              onOtpInputChange={onOtpInputChange}
+              onOtpInputChange={handleOnOtpInputChange}
+              otpInputErrorMsg={otpInputVerifyErrorMsg}
             />
+            <Button onClick={handleSubmitVerifyOtpCode} isLoading={isModalLoading}>
+              <p>Verify</p>
+            </Button>
           </Modal>
         )}
       </div>
