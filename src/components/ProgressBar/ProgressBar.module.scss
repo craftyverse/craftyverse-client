@@ -1,0 +1,29 @@
+@import '../../styles/pallate.module.scss';
+@import '../../styles/variables.module.scss';
+
+.progressBarContainer {
+
+  .progressBar {
+    width: 100%;
+    height: 8px;
+    margin: 32px 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: stretch;
+    border-radius: 60px;
+    background-color: map-get($map: $grey-palette, $key: 300);
+    overflow: hidden;
+
+    .bar {
+      width: 0%;
+      background: rgb(2,0,36);
+      background: linear-gradient(
+        90deg,
+        map-get($orange-pallate, $key: 80) 0%, 
+        map-get($orange-pallate, $key: 60) 35%, 
+        map-get($orange-pallate, $key: 40) 100%
+      );
+    }
+  }
+}

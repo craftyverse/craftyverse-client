@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styles from './BusinessNameForm.module.scss';
 import { LocationRegistrationWrapper } from '../../wrappers/LocationRegistrationWrapper';
 import { Input } from '../../components/Input';
+import { ProgressBar } from '../../components/ProgressBar';
 
 interface BusinessNameFormProps {
   userName: string;
@@ -23,6 +24,7 @@ export const BusinessNameForm: React.FC<BusinessNameFormProps> = ({
 
   const handleBusinessNameBlur = (event: React.FocusEvent<HTMLInputElement>) => {
     setBusinessName(event.target.value);
+    console.log(event.target.value);
     setToggleBusinessNameInputFocus(false);
   };
 
@@ -32,6 +34,7 @@ export const BusinessNameForm: React.FC<BusinessNameFormProps> = ({
 
   return (
     <LocationRegistrationWrapper locationData={{ businessName }}>
+      <ProgressBar progressStage="5%"></ProgressBar>
       <p className={styles.businessNameContainer}>
         We are very excited to have you here {userName}! Let's start off by telling us your business
         name.
