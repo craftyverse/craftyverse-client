@@ -1,1 +1,0 @@
-export { LocationRegistrationWrapper } from './LocationRegistrationWrapper';

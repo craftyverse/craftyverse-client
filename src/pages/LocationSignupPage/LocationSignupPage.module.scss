@@ -7,4 +7,38 @@
   justify-content: center;
   height: 100vh;
   background-color: map-get($map: $milk-palette, $key: 200);
+
+  .locationSignupFormContainer {
+    display: flex;
+    flex-direction: column;
+    padding: 48px 32px;
+    background-color: map-get($grey-palette , 0);
+    height: 645px;
+    width: 620px;
+    border-radius: 15px;
+  }
+  .locationSignupFormLogoContainer {
+     h1 {
+      font-family: 'Pacifico', 'Arial Narrow', Arial, sans-serif;
+      padding-top: 16px;
+      font-size: 32px;
+      color: $logo-main;
+    }
+  }
+
+  .locationSignupFormCtaContainer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: inherit;
+    align-items: end;
+    justify-content: end;
+
+    .locationSignupFormCtaBtn {
+      display: flex;
+      flex-direction: row;
+      width: 40%;
+      gap: 8px;
+    }
+  }
 }

@@ -1,0 +1,7 @@
+.businesBasicInfoContainer {
+  .businessbasicInfoAreaInfo {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr; /* Equal width columns for three divs */
+    grid-gap: 10px; /* Add some gap between the divs */
+  }
+}

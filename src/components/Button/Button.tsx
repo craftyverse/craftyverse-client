@@ -4,6 +4,7 @@ import { Spinner } from '../Spinner/Spinner';
 
 export interface ButtonProps {
   type?: 'primary' | 'secondary';
+  buttonType?: 'button' | 'submit' | 'reset' | undefined;
   children: React.ReactNode;
   onClick?: MouseEventHandler<HTMLButtonElement>;
   fullWidth?: boolean;
@@ -15,6 +16,7 @@ export interface ButtonProps {
 export const Button: React.FC<ButtonProps> = ({
   children,
   type = 'primary',
+  buttonType,
   fullWidth = false,
   className = '',
   ariaLabel,
@@ -25,6 +27,7 @@ export const Button: React.FC<ButtonProps> = ({
   return (
     <button
       data-testid={dataTestId}
+      type={buttonType}
       className={`${type === 'primary' && styles.primaryButton} ${
         type === 'secondary' && styles.secondaryButton
       }`}

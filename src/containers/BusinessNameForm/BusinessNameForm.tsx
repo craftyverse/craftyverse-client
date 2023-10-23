@@ -1,52 +1,38 @@
 import React, { useEffect, useState } from 'react';
-import styles from './BusinessNameForm.module.scss';
-import { LocationRegistrationWrapper } from '../../wrappers/LocationRegistrationWrapper';
 import { Input } from '../../components/Input';
-import { ProgressBar } from '../../components/ProgressBar';
+import styles from './BusinessNameForm.module.scss';
 
 interface BusinessNameFormProps {
   userName: string;
+  inputErrorMsg: string;
+  setBusinessNameInput: (businessName: string) => void;
 }
+
 export const BusinessNameForm: React.FC<BusinessNameFormProps> = ({
   userName,
-}: BusinessNameFormProps) => {
-  const [businessName, setBusinessName] = useState<string>('');
+  inputErrorMsg,
+  setBusinessNameInput,
+}) => {
   const [toggleBusinessNameInputFocus, setToggleBusinessNameInputFocus] = useState<boolean>(false);
-  const [businessNameInputErrormsg, setBussinessNameInputErrorMsg] = useState<string>('');
 
-  const validateBusinessNameInput = (input: string): void => {
-    if (!input) {
-      setBussinessNameInputErrorMsg('');
-    } else if (input.length === 0) {
-      setBussinessNameInputErrorMsg('Please enter your business name');
-    }
-  };
-
-  const handleBusinessNameBlur = (event: React.FocusEvent<HTMLInputElement>) => {
-    setBusinessName(event.target.value);
-    console.log(event.target.value);
+  const handleBusinessNameBlur = (event: any) => {
+    setBusinessNameInput(event.target.value);
     setToggleBusinessNameInputFocus(false);
   };
 
-  useEffect(() => {
-    validateBusinessNameInput(businessName);
-  }, [businessName]);
-
   return (
-    <LocationRegistrationWrapper locationData={{ businessName }}>
-      <ProgressBar progressStage="5%"></ProgressBar>
-      <p className={styles.businessNameContainer}>
+    <div className={styles.businessNameFormContainer}>
+      <p>
         We are very excited to have you here {userName}! Let's start off by telling us your business
         name.
       </p>
       <Input
-        type="text"
-        labelName="Your business name"
-        inputErrorMessage={businessNameInputErrormsg}
+        type={'text'}
+        labelName={'Your Business Name'}
         onBlur={handleBusinessNameBlur}
-        onFocus={() => setToggleBusinessNameInputFocus(true)}
         toggleInputFocus={toggleBusinessNameInputFocus}
+        inputErrorMessage={inputErrorMsg}
       ></Input>
-    </LocationRegistrationWrapper>
+    </div>
   );
 };
