@@ -1,14 +1,21 @@
 @import '../../styles/pallate.module.scss';
 @import '../../styles/variables.module.scss';
 
+// Input Global variables
+$input-width-padding: 110px;
+
 .inputContainer {
   display: flex;
   flex-direction: column;
   gap: 8px;
   padding-bottom: 24px;
   min-width: 49%; 
+  .inputLabelName {
+    color: map-get($grey-palette, 700);
+    font-size: 12px;
+  }
   .activeInputElement {
-    border: 2px solid map-get($map: $green-palette, $key: 900) !important;
+    border: 1px solid map-get($map: $green-palette, $key: 900) !important;
   }
 
   .errorInputElement {
@@ -18,7 +25,7 @@
   .inputElement {
     display: flex;
     align-items: center;
-    border: 2px solid map-get($map: $grey-palette, $key: 500);
+    border: 1px solid map-get($map: $grey-palette, $key: 400);
 
     border-radius: 15px;
     height: 56px;

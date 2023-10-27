@@ -3,7 +3,8 @@ import axios from 'axios';
 import useAuth from '../../hooks/useAuth';
 import styles from './LocationSignupPage.module.scss';
 import { BusinessNameForm } from '../../containers/BusinessNameForm';
-import { BusinessBasicInfo } from '../../containers/BusinessBasicInfo';
+import { BusinessBasicInfoForm } from '../../containers/BusinessBasicInfoForm';
+import { BusinessPreferencesForm } from '../../containers/BusinessPreferenceForm';
 import { Button } from '../../components/Button';
 import { useCreateLocationForm } from '../../hooks/useCreateLocationForm';
 import { ProgressBar } from '../../components/ProgressBar';
@@ -43,19 +44,28 @@ const intialLocationData = {
 };
 export const LocationSignupPage: React.FC = () => {
   const authenticatedUser = useAuth();
-  const [locationData, setLocationData] = useState<Record<string, string>>(intialLocationData);
+  const [locationData, setLocationData] = useState<LocationFormDataType>(intialLocationData);
   const [inputErrorMsg, setInputErrorMsg] = useState<string>('');
-  const [businessNameData, setBusinessNameData] = useState<string>('');
+  const [stepSubmitErrorMsg, setStepSubmitErrorMsg] = useState<string>('');
+
+  const updateLocationData = (fields: Partial<LocationFormDataType>) => {
+    setLocationData((prev) => {
+      return { ...prev, ...fields };
+    });
+  };
   const { steps, currentStepIndex, currentStep, isFirstStep, isLastStep, previousStep, nextStep } =
     useCreateLocationForm([
       <BusinessNameForm
-        setBusinessNameInput={setBusinessNameData}
         inputErrorMsg={inputErrorMsg}
         userName={`${authenticatedUser?.currentUser?.userFirstName}`}
+        {...locationData}
+        updateLocationData={updateLocationData}
       />,
-      <BusinessBasicInfo />,
-      <div>Hii from step 3</div>,
-      <div>Hii from step 4</div>,
+      <BusinessBasicInfoForm {...locationData} updateLocationData={updateLocationData} />,
+      <BusinessPreferencesForm />,
+      <div>
+        <p>Hii from step 4</p>
+      </div>,
       <div>Hii from step 5</div>,
     ]);
 
@@ -70,27 +80,32 @@ export const LocationSignupPage: React.FC = () => {
   };
 
   useEffect(() => {
-    validateBusinessNameInput(businessNameData);
-  }, [businessNameData]);
+    validateBusinessNameInput(locationData.locationName);
+
+    if (!locationData.locationName) {
+      setInputErrorMsg('Please enter a valid business name');
+    }
+  }, [locationData.locationName]);
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
 
-    if (inputErrorMsg || !businessNameData) {
-      setInputErrorMsg('Please enter a valid business name');
+    if (!locationData.locationName) {
+      setStepSubmitErrorMsg('Please enter a valid business name');
       return;
     }
 
+    setStepSubmitErrorMsg('');
     nextStep();
   };
 
   return (
     <div className={styles.locationSignupContainer}>
       <div className={styles.locationSignupFormContainer}>
-        <div className={styles.locationSignupFormLogoContainer}>
-          <h1> Craftyverse</h1>
-        </div>
-        <form onSubmit={handleSubmit}>
+        <div>
+          <div className={styles.locationSignupFormLogoContainer}>
+            <h1> Craftyverse</h1>
+          </div>
           <div>
             {currentStepIndex + 1 && (
               <ProgressBar
@@ -98,11 +113,12 @@ export const LocationSignupPage: React.FC = () => {
               />
             )}
           </div>
-          {currentStep}
-          <div className={styles.locationSignupFormCtaContainer}>
-            <div className={styles.locationSignupFormCtaBtn}>
+
+          <form onSubmit={handleSubmit} className={styles.locationSignupFormContent}>
+            {currentStep}
+            <div className={styles.locationSignupFormCtaContainer}>
               {!isFirstStep && (
-                <Button buttonType="submit" onClick={previousStep} type="secondary">
+                <Button buttonType="button" onClick={previousStep} type="secondary">
                   Back
                 </Button>
               )}
@@ -110,11 +126,10 @@ export const LocationSignupPage: React.FC = () => {
                 {isLastStep ? 'Submit' : 'Next'}
               </Button>
             </div>
-          </div>
-        </form>
+            <span className={styles.locationSignupFormErrorMsg}>{stepSubmitErrorMsg}</span>
+          </form>
+        </div>
       </div>
-      {/* {businessNameData} */}
-      {/* <BusinessNameForm userName={`${authenticatedUser?.currentUser?.userFirstName}`} /> */}
     </div>
   );
 };

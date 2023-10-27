@@ -226,6 +226,7 @@ export const SigninForm = () => {
         <Input
           type="email"
           labelName="Your Email"
+          placeholderName="Your Email"
           inputErrorMessage={emailInputErrorMsg}
           onFocus={() => setToggleEmailInputFocus(true)}
           onBlur={handleEmailBlur}
@@ -235,6 +236,7 @@ export const SigninForm = () => {
         <Input
           type="password"
           labelName="Your Password"
+          placeholderName="Your Password"
           onFocus={() => setTogglePasswordInputFocus(true)}
           onBlur={handlePasswordBlur}
           onChange={handlePasswordChange}

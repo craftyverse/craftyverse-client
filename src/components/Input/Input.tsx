@@ -6,11 +6,13 @@ import IcomoonReact from 'icomoon-react';
 export interface inputProps {
   type: 'text' | 'email' | 'password' | 'checkbox';
   labelName: string;
+  placeholderName?: string;
   inputErrorMessage?: string;
   onBlur?: FocusEventHandler<HTMLInputElement>;
   onFocus?: FocusEventHandler<HTMLInputElement>;
   onChange?: FocusEventHandler<HTMLInputElement>;
   toggleInputFocus?: boolean;
+  value?: string;
 }
 
 const renderInputIcons = (type: string, labelName: string) => {
@@ -31,10 +33,12 @@ export const Input: React.FC<inputProps> = ({
   type,
   labelName,
   inputErrorMessage,
+  placeholderName,
   onBlur,
   onFocus,
   onChange,
   toggleInputFocus,
+  value,
 }) => {
   const [toggleShowPassword, setToggleShowPassword] = useState<boolean>(false);
 
@@ -68,7 +72,9 @@ export const Input: React.FC<inputProps> = ({
 
   return (
     <div className={styles.inputContainer}>
-      <label htmlFor={labelName}>{labelName}</label>
+      <label htmlFor={labelName} className={styles.inputLabelName}>
+        {labelName}
+      </label>
       <div
         className={`${toggleInputFocus && styles.activeInputElement} ${styles.inputElement} ${
           inputErrorMessage && styles.errorInputElement
@@ -79,19 +85,21 @@ export const Input: React.FC<inputProps> = ({
           <input
             type="text"
             name={labelName}
-            placeholder={labelName}
+            placeholder={placeholderName}
             onFocus={onFocus}
             onBlur={onBlur}
             onChange={onChange}
+            value={value}
           />
         ) : (
           <input
             type={type}
             name={labelName}
-            placeholder={labelName}
+            placeholder={placeholderName}
             onFocus={onFocus}
             onBlur={onBlur}
             onChange={onChange}
+            value={value}
           />
         )}
         <div className={styles.eyeIcon}>
