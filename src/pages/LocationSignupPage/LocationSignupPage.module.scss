@@ -31,16 +31,16 @@ $form-height: 745px;
       position: relative;
       height: $form-height - 32px;
 
-      .locationSignupFormErrorMsg {
-        position: absolute;
-        font-family: 'Familjen Grotesk';
-        font-size: 16px;
-        color: $error-msg;
-        text-align: right;
-        width: 100%;
-        right: 0;
-        bottom: 48px;
-      }
+      // .locationSignupFormErrorMsg {
+      //   position: absolute;
+      //   font-family: 'Familjen Grotesk';
+      //   font-size: 16px;
+      //   color: $error-msg;
+      //   text-align: right;
+      //   width: 100%;
+      //   right: 0;
+      //   bottom: 48px;
+      // }
       .locationSignupFormCtaContainer {
         position: absolute;
         display: flex;

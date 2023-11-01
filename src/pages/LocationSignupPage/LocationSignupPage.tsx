@@ -1,5 +1,4 @@
 import React, { FormEvent, useEffect, useState } from 'react';
-import axios from 'axios';
 import useAuth from '../../hooks/useAuth';
 import styles from './LocationSignupPage.module.scss';
 import { BusinessNameForm } from '../../containers/BusinessNameForm';
@@ -8,6 +7,7 @@ import { BusinessPreferencesForm } from '../../containers/BusinessPreferenceForm
 import { Button } from '../../components/Button';
 import { useCreateLocationForm } from '../../hooks/useCreateLocationForm';
 import { ProgressBar } from '../../components/ProgressBar';
+import { set } from 'zod';
 
 type LocationFormDataType = {
   locationName: string;
@@ -45,58 +45,97 @@ const intialLocationData = {
 export const LocationSignupPage: React.FC = () => {
   const authenticatedUser = useAuth();
   const [locationData, setLocationData] = useState<LocationFormDataType>(intialLocationData);
-  const [inputErrorMsg, setInputErrorMsg] = useState<string>('');
-  const [stepSubmitErrorMsg, setStepSubmitErrorMsg] = useState<string>('');
+  const [submitInputErrMsg, setSubmitInputErrorMsg] = useState<string>('');
 
   const updateLocationData = (fields: Partial<LocationFormDataType>) => {
     setLocationData((prev) => {
       return { ...prev, ...fields };
     });
   };
-  const { steps, currentStepIndex, currentStep, isFirstStep, isLastStep, previousStep, nextStep } =
-    useCreateLocationForm([
-      <BusinessNameForm
-        inputErrorMsg={inputErrorMsg}
-        userName={`${authenticatedUser?.currentUser?.userFirstName}`}
-        {...locationData}
-        updateLocationData={updateLocationData}
-      />,
-      <BusinessBasicInfoForm {...locationData} updateLocationData={updateLocationData} />,
-      <BusinessPreferencesForm />,
-      <div>
-        <p>Hii from step 4</p>
-      </div>,
-      <div>Hii from step 5</div>,
-    ]);
-
-  const validateBusinessNameInput = (businessNameInput: string) => {
-    if (!businessNameInput) {
-      setInputErrorMsg('');
-    } else if (businessNameInput.length < 2) {
-      setInputErrorMsg('Please enter a valid business name');
-    } else {
-      setInputErrorMsg('');
-    }
-  };
-
-  useEffect(() => {
-    validateBusinessNameInput(locationData.locationName);
-
-    if (!locationData.locationName) {
-      setInputErrorMsg('Please enter a valid business name');
-    }
-  }, [locationData.locationName]);
+  const { steps, currentStepIndex, currentStep, isFirstStep, isLastStep, previousStep, nextStep } = useCreateLocationForm([
+    <BusinessNameForm
+      locationNameErrorMsg={submitInputErrMsg}
+      userName={`${authenticatedUser?.currentUser?.userFirstName}`}
+      {...locationData}
+      updateLocationData={updateLocationData}
+    />,
+    <BusinessBasicInfoForm submitFormErrorMsg={submitInputErrMsg} {...locationData} updateLocationData={updateLocationData} />,
+    <BusinessPreferencesForm />,
+    <div>
+      <p>Hii from step 4</p>
+    </div>,
+    <div>Hii from step 5</div>,
+  ]);
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
 
-    if (!locationData.locationName) {
-      setStepSubmitErrorMsg('Please enter a valid business name');
-      return;
+    // For step1: locationName submit input validation
+    if (currentStepIndex === 0) {
+      if (!locationData.locationName) {
+        setSubmitInputErrorMsg('Please enter your business name.');
+        return;
+      }
+      if (locationData.locationName.length < 3) {
+        setSubmitInputErrorMsg('Business name must be at least 3 characters.');
+        return;
+      }
+      setSubmitInputErrorMsg('');
+      nextStep();
     }
 
-    setStepSubmitErrorMsg('');
-    nextStep();
+    if (currentStepIndex === 1) {
+      if (!locationData.locationLegalAddressLine1) {
+        setSubmitInputErrorMsg('Please enter your business address.');
+        return;
+      }
+      if (locationData.locationLegalAddressLine1.length < 3) {
+        setSubmitInputErrorMsg('Business address must be at least 3 characters.');
+        return;
+      }
+      if (!locationData.locationLegalAddressLine2) {
+        setSubmitInputErrorMsg('Please enter your business address.');
+        return;
+      }
+      if (locationData.locationLegalAddressLine2.length < 3) {
+        setSubmitInputErrorMsg('Business address must be at least 3 characters.');
+        return;
+      }
+      if (!locationData.locationLegalCity) {
+        setSubmitInputErrorMsg('Please enter your business city.');
+        return;
+      }
+      if (locationData.locationLegalCity.length < 2) {
+        setSubmitInputErrorMsg('Business city must be at least 2 characters.');
+        return;
+      }
+      if (!locationData.locationLegalState) {
+        setSubmitInputErrorMsg('Please enter your business state.');
+        return;
+      }
+      if (locationData.locationLegalState.length < 2) {
+        setSubmitInputErrorMsg('Business state must be at least 2 characters.');
+        return;
+      }
+      if (!locationData.locationLegalCountry) {
+        setSubmitInputErrorMsg('Please enter your business country.');
+        return;
+      }
+      if (locationData.locationLegalCountry.length < 2) {
+        setSubmitInputErrorMsg('Business country must be at least 2 characters.');
+        return;
+      }
+      if (!locationData.locationLegalPostcode) {
+        setSubmitInputErrorMsg('Please enter your business postcode.');
+        return;
+      }
+      if (locationData.locationLegalPostcode.length < 2) {
+        setSubmitInputErrorMsg('Business postcode must be at least 2 characters.');
+        return;
+      }
+      setSubmitInputErrorMsg('');
+      nextStep();
+    }
   };
 
   return (
@@ -106,13 +145,7 @@ export const LocationSignupPage: React.FC = () => {
           <div className={styles.locationSignupFormLogoContainer}>
             <h1> Craftyverse</h1>
           </div>
-          <div>
-            {currentStepIndex + 1 && (
-              <ProgressBar
-                progressStage={`${(100 / steps.length - 1) * (currentStepIndex + 1)}%`}
-              />
-            )}
-          </div>
+          <div>{currentStepIndex + 1 && <ProgressBar progressStage={`${(100 / steps.length - 1) * (currentStepIndex + 1)}%`} />}</div>
 
           <form onSubmit={handleSubmit} className={styles.locationSignupFormContent}>
             {currentStep}
@@ -126,10 +159,11 @@ export const LocationSignupPage: React.FC = () => {
                 {isLastStep ? 'Submit' : 'Next'}
               </Button>
             </div>
-            <span className={styles.locationSignupFormErrorMsg}>{stepSubmitErrorMsg}</span>
           </form>
         </div>
       </div>
+      {/* {locationData.locationName}
+      {locationData.locationLegalAddressLine1} */}
     </div>
   );
 };

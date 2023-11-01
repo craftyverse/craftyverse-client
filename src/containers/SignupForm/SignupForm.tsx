@@ -203,6 +203,7 @@ export const SignupForm: React.FC = () => {
           <Input
             type="text"
             labelName="First Name"
+            placeholderName="First Name"
             onBlur={handleFirstNameBlur}
             onFocus={() => setToggleFirstNameInputFocus(true)}
             onChange={handleFirstNameChange}
@@ -212,6 +213,7 @@ export const SignupForm: React.FC = () => {
           <Input
             type="text"
             labelName="Last Name"
+            placeholderName="Last Name"
             onBlur={handleLastNameBlur}
             onFocus={() => setToggleLastNameInputFocus(true)}
             onChange={handleLastNameChange}
@@ -222,6 +224,7 @@ export const SignupForm: React.FC = () => {
         <Input
           type="email"
           labelName="Email"
+          placeholderName="Email"
           onBlur={handleEmailBlur}
           onFocus={() => setToggleEmailInputFocus(true)}
           onChange={handleEmailChange}
@@ -231,6 +234,7 @@ export const SignupForm: React.FC = () => {
         <Input
           type="password"
           labelName="Password"
+          placeholderName="Password"
           onBlur={handlePasswordBlur}
           onFocus={() => setTogglePasswordInputFocus(true)}
           onChange={handlePasswordChange}
@@ -240,6 +244,7 @@ export const SignupForm: React.FC = () => {
         <Input
           type="password"
           labelName="Confirm Password"
+          placeholderName="Confirm Password"
           onBlur={handleConfirmPasswordBlur}
           onFocus={() => setToggleConfirmPasswordInputFocus(true)}
           onChange={handleConfirmPasswordChange}

@@ -24,7 +24,7 @@ const renderInputIcons = (type: string, labelName: string) => {
     return <IcomoonReact iconSet={iconSet} icon="lock-outline" size={24} color="#000000" />;
   }
 
-  if (type === 'text' && labelName.includes('First') && labelName.includes('Last')) {
+  if (type === 'text' && (labelName.includes('First') || labelName.includes('Last'))) {
     return <IcomoonReact iconSet={iconSet} icon="user-outline" size={24} color="#000000" />;
   }
 };

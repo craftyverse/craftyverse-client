@@ -2,7 +2,7 @@
 @import '../../styles/variables.module.scss';
 
 // Input Global variables
-$input-width-padding: 110px;
+$input-width-padding: 96px;
 
 .inputContainer {
   display: flex;
@@ -33,7 +33,7 @@ $input-width-padding: 110px;
     padding-left: 16px;
 
     .eyeIcon {
-      padding-left: 16px;
+      padding-left: 24px;
 
       button {
         border: none;
@@ -46,7 +46,7 @@ $input-width-padding: 110px;
       border-radius: 15px;
       height: 54px;
       padding-left: 16px;
-      width: calc(100% - $input-width-padding);
+      width: calc(100% - ($input-width-padding + 16px));
       outline: none;
     }
   }
