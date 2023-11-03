@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Input } from '../../components/Input';
+import { Dropdown } from '../../components/Dropdown';
 import styles from './BusinessBasicInfoForm.module.scss';
 
 type BusinessBasicInfoDataType = {
@@ -46,7 +47,10 @@ export const BusinessBasicInfoForm: React.FC<BusinessBasicInfoProps> = ({
 
   const validateLocationLegalAddressLine1 = (input: string) => {
     if (!input) {
-      setLocationBasicInfoErrorMsg({ ...locationBasicInfoErrorMsg, locationLegalAddressLine1ErrorMsg: 'Please enter your business address.' });
+      setLocationBasicInfoErrorMsg({
+        ...locationBasicInfoErrorMsg,
+        locationLegalAddressLine1ErrorMsg: 'Please enter your business address.',
+      });
     } else if (input.length < 3) {
       setLocationBasicInfoErrorMsg({
         ...locationBasicInfoErrorMsg,
@@ -55,13 +59,19 @@ export const BusinessBasicInfoForm: React.FC<BusinessBasicInfoProps> = ({
     } else if (input.length > 3) {
       setLocationBasicInfoErrorMsg({ ...locationBasicInfoErrorMsg, locationLegalAddressLine1ErrorMsg: '' });
     } else if (submitFormErrorMsg) {
-      setLocationBasicInfoErrorMsg({ ...locationBasicInfoErrorMsg, locationLegalAddressLine1ErrorMsg: submitFormErrorMsg });
+      setLocationBasicInfoErrorMsg({
+        ...locationBasicInfoErrorMsg,
+        locationLegalAddressLine1ErrorMsg: submitFormErrorMsg,
+      });
     }
   };
 
   const validateLocationLegalAddressLine2 = (input: string) => {
     if (!input) {
-      setLocationBasicInfoErrorMsg({ ...locationBasicInfoErrorMsg, locationLegalAddressLine2ErrorMsg: 'Please enter your business address.' });
+      setLocationBasicInfoErrorMsg({
+        ...locationBasicInfoErrorMsg,
+        locationLegalAddressLine2ErrorMsg: 'Please enter your business address.',
+      });
     } else if (input.length < 3) {
       setLocationBasicInfoErrorMsg({
         ...locationBasicInfoErrorMsg,
@@ -70,15 +80,24 @@ export const BusinessBasicInfoForm: React.FC<BusinessBasicInfoProps> = ({
     } else if (input.length > 3) {
       setLocationBasicInfoErrorMsg({ ...locationBasicInfoErrorMsg, locationLegalAddressLine2ErrorMsg: '' });
     } else if (submitFormErrorMsg) {
-      setLocationBasicInfoErrorMsg({ ...locationBasicInfoErrorMsg, locationLegalAddressLine2ErrorMsg: submitFormErrorMsg });
+      setLocationBasicInfoErrorMsg({
+        ...locationBasicInfoErrorMsg,
+        locationLegalAddressLine2ErrorMsg: submitFormErrorMsg,
+      });
     }
   };
 
   const validateLocationLegalCountry = (input: string) => {
     if (!input) {
-      setLocationBasicInfoErrorMsg({ ...locationBasicInfoErrorMsg, locationLegalCountry: 'Please enter your country of operation.' });
+      setLocationBasicInfoErrorMsg({
+        ...locationBasicInfoErrorMsg,
+        locationLegalCountry: 'Please enter your country of operation.',
+      });
     } else if (input.length < 2) {
-      setLocationBasicInfoErrorMsg({ ...locationBasicInfoErrorMsg, locationLegalCountry: 'Country names must contian at least 2 characters.' });
+      setLocationBasicInfoErrorMsg({
+        ...locationBasicInfoErrorMsg,
+        locationLegalCountry: 'Country names must contian at least 2 characters.',
+      });
     } else {
       setLocationBasicInfoErrorMsg({ ...locationBasicInfoErrorMsg, locationLegalCountry: '' });
     }
@@ -86,9 +105,15 @@ export const BusinessBasicInfoForm: React.FC<BusinessBasicInfoProps> = ({
 
   const validateLocationLegalCity = (input: string) => {
     if (!input) {
-      setLocationBasicInfoErrorMsg({ ...locationBasicInfoErrorMsg, locationLegalCity: 'Please enter your city of operation.' });
+      setLocationBasicInfoErrorMsg({
+        ...locationBasicInfoErrorMsg,
+        locationLegalCity: 'Please enter your city of operation.',
+      });
     } else if (input.length < 2) {
-      setLocationBasicInfoErrorMsg({ ...locationBasicInfoErrorMsg, locationLegalCity: 'City names must contian at least 2 characters.' });
+      setLocationBasicInfoErrorMsg({
+        ...locationBasicInfoErrorMsg,
+        locationLegalCity: 'City names must contian at least 2 characters.',
+      });
     } else {
       setLocationBasicInfoErrorMsg({ ...locationBasicInfoErrorMsg, locationLegalCity: '' });
     }
@@ -96,23 +121,42 @@ export const BusinessBasicInfoForm: React.FC<BusinessBasicInfoProps> = ({
 
   const validateLocationLegalState = (input: string) => {
     if (!input) {
-      setLocationBasicInfoErrorMsg({ ...locationBasicInfoErrorMsg, locationLegalState: 'Please enter your state of operation.' });
+      setLocationBasicInfoErrorMsg({
+        ...locationBasicInfoErrorMsg,
+        locationLegalState: '',
+      });
     } else if (input.length < 2) {
-      setLocationBasicInfoErrorMsg({ ...locationBasicInfoErrorMsg, locationLegalState: 'State names must contian at least 2 characters.' });
-    } else {
-      setLocationBasicInfoErrorMsg({ ...locationBasicInfoErrorMsg, locationLegalState: '' });
+      setLocationBasicInfoErrorMsg({
+        ...locationBasicInfoErrorMsg,
+        locationLegalState: 'State names must contian at least 2 characters.',
+      });
+    } else if (submitFormErrorMsg) {
+      setLocationBasicInfoErrorMsg({
+        ...locationBasicInfoErrorMsg,
+        locationLegalState: submitFormErrorMsg,
+      });
     }
   };
 
   const validateLocationLegalPostcode = (input: string) => {
     if (!input) {
-      setLocationBasicInfoErrorMsg({ ...locationBasicInfoErrorMsg, locationLegalPostcode: 'Please enter your postal code.' });
+      setLocationBasicInfoErrorMsg({
+        ...locationBasicInfoErrorMsg,
+        locationLegalPostcode: 'Please enter your postal code.',
+      });
     } else if (input.length < 2) {
-      setLocationBasicInfoErrorMsg({ ...locationBasicInfoErrorMsg, locationLegalPostcode: 'Postal codes must contian at least 2 digits.' });
+      setLocationBasicInfoErrorMsg({
+        ...locationBasicInfoErrorMsg,
+        locationLegalPostcode: 'Postal codes must contian at least 2 digits.',
+      });
     } else {
       setLocationBasicInfoErrorMsg({ ...locationBasicInfoErrorMsg, locationLegalPostcode: '' });
     }
   };
+
+  useEffect(() => {
+    validateLocationLegalState(locationLegalState);
+  }, [locationLegalState, locationBasicInfoErrorMsg.locationLegalState]);
 
   return (
     <div className={styles.businesBasicInfoFormContainer}>
@@ -120,10 +164,12 @@ export const BusinessBasicInfoForm: React.FC<BusinessBasicInfoProps> = ({
         Now that we've got your business name, we would love to know a little bit more about your business.
       </p>
       <p className={styles.businessBasicInfoFormContent}>
-        This will give us a chance to more accurately recommend your products to your potential customers near you.
+        This will give us a chance to more accurately recommend your products to your potential customers near
+        you.
       </p>
+
       <Input
-        labelName="Address Line 1"
+        labelName="Address Line 1*"
         placeholderName="Line 1"
         type="text"
         onBlur={(event) => {
@@ -132,7 +178,10 @@ export const BusinessBasicInfoForm: React.FC<BusinessBasicInfoProps> = ({
         }}
         onChange={(event) => {
           updateLocationData({ locationLegalAddressLine1: event.target.value });
-          setLocationBasicInfoErrorMsg({ ...locationBasicInfoErrorMsg, locationLegalAddressLine1ErrorMsg: '' });
+          setLocationBasicInfoErrorMsg({
+            ...locationBasicInfoErrorMsg,
+            locationLegalAddressLine1ErrorMsg: '',
+          });
         }}
         onFocus={() => {
           setBusinessBasicInfoInputFocus({ locationLegalAddressLine1InputFocus: true });
@@ -142,7 +191,7 @@ export const BusinessBasicInfoForm: React.FC<BusinessBasicInfoProps> = ({
         value={locationLegalAddressLine1}
       />
       <Input
-        labelName="Address Line 2"
+        labelName="Address Line 2*"
         placeholderName="Line 2"
         type="text"
         onBlur={(event) => {
@@ -152,7 +201,10 @@ export const BusinessBasicInfoForm: React.FC<BusinessBasicInfoProps> = ({
         }}
         onChange={(event) => {
           updateLocationData({ locationLegalAddressLine2: event.target.value });
-          setLocationBasicInfoErrorMsg({ ...locationBasicInfoErrorMsg, locationLegalAddressLine2ErrorMsg: '' });
+          setLocationBasicInfoErrorMsg({
+            ...locationBasicInfoErrorMsg,
+            locationLegalAddressLine2ErrorMsg: '',
+          });
         }}
         onFocus={() => {
           setBusinessBasicInfoInputFocus({ locationLegalAddressLine2InputFocus: true });
@@ -161,30 +213,9 @@ export const BusinessBasicInfoForm: React.FC<BusinessBasicInfoProps> = ({
         inputErrorMessage={locationBasicInfoErrorMsg.locationLegalAddressLine2ErrorMsg}
         value={locationLegalAddressLine2}
       />
-
-      <Input
-        labelName="Country of primary operation"
-        placeholderName="Country"
-        type="text"
-        onBlur={(event) => {
-          updateLocationData({ locationLegalCountry: event.target.value });
-          setBusinessBasicInfoInputFocus({ locationLegalCountryInputFocus: false });
-          validateLocationLegalCountry(locationLegalCountry);
-        }}
-        onChange={(event) => {
-          updateLocationData({ locationLegalCountry: event.target.value });
-          setLocationBasicInfoErrorMsg({ ...locationBasicInfoErrorMsg, locationLegalCountry: '' });
-        }}
-        onFocus={() => {
-          setBusinessBasicInfoInputFocus({ locationLegalCountryInputFocus: true });
-        }}
-        toggleInputFocus={businessBasicInfoInputFocus.locationLegalCountryInputFocus}
-        inputErrorMessage={locationBasicInfoErrorMsg.locationLegalCountry}
-        value={locationLegalCountry}
-      />
       <div className={styles.businessbasicInfoAreaInfo}>
         <Input
-          labelName="City / Town"
+          labelName="City / Town*"
           placeholderName="City"
           type="text"
           onBlur={(event) => {
@@ -203,28 +234,20 @@ export const BusinessBasicInfoForm: React.FC<BusinessBasicInfoProps> = ({
           inputErrorMessage={locationBasicInfoErrorMsg.locationLegalCity}
           value={locationLegalCity}
         />
-        <Input
-          labelName="State / Province"
-          placeholderName="State"
-          type="text"
-          onBlur={(event) => {
-            updateLocationData({ locationLegalState: event.target.value });
-            validateLocationLegalState(locationLegalState);
-            setBusinessBasicInfoInputFocus({ locationLegalStateInputFocus: false });
+        <Dropdown
+          dropdownHeaderTitle={'State / Province*'}
+          dropdownHeaderName={'Select'}
+          dropdownOptionsArray={['NSW', 'MEL', 'VIC', 'QLD', 'SA', 'WA', 'TAS', 'NT', 'ACT']}
+          onSelection={(selection) => {
+            updateLocationData({ locationLegalState: selection });
+            if (!locationLegalState) {
+              setLocationBasicInfoErrorMsg({ locationLegalState: 'Please select your state.' });
+            }
           }}
-          onChange={(event) => {
-            updateLocationData({ locationLegalState: event.target.value });
-            setLocationBasicInfoErrorMsg({ ...locationBasicInfoErrorMsg, locationLegalState: '' });
-          }}
-          onFocus={() => {
-            setBusinessBasicInfoInputFocus({ locationLegalStateInputFocus: true });
-          }}
-          toggleInputFocus={businessBasicInfoInputFocus.locationLegalStateInputFocus}
-          inputErrorMessage={locationBasicInfoErrorMsg.locationLegalState}
-          value={locationLegalState}
+          selectionErrorMessage={locationBasicInfoErrorMsg.locationLegalState}
         />
         <Input
-          labelName="Postal / Zip Code"
+          labelName="Postal / Zip Code*"
           placeholderName="Zip"
           type="text"
           onBlur={(event) => {
@@ -244,11 +267,26 @@ export const BusinessBasicInfoForm: React.FC<BusinessBasicInfoProps> = ({
           value={locationLegalPostcode}
         />
       </div>
-      {/* {locationLegalAddressLine1}
-      {locationLegalAddressLine2}
-      {locationLegalCity}
-      {locationLegalCountry}
-      {locationLegalPostcode} */}
+      <Input
+        labelName="Country of primary operation*"
+        placeholderName="Country"
+        type="text"
+        onBlur={(event) => {
+          updateLocationData({ locationLegalCountry: event.target.value });
+          setBusinessBasicInfoInputFocus({ locationLegalCountryInputFocus: false });
+          validateLocationLegalCountry(locationLegalCountry);
+        }}
+        onChange={(event) => {
+          updateLocationData({ locationLegalCountry: event.target.value });
+          setLocationBasicInfoErrorMsg({ ...locationBasicInfoErrorMsg, locationLegalCountry: '' });
+        }}
+        onFocus={() => {
+          setBusinessBasicInfoInputFocus({ locationLegalCountryInputFocus: true });
+        }}
+        toggleInputFocus={businessBasicInfoInputFocus.locationLegalCountryInputFocus}
+        inputErrorMessage={locationBasicInfoErrorMsg.locationLegalCountry}
+        value={locationLegalCountry}
+      />
     </div>
   );
 };

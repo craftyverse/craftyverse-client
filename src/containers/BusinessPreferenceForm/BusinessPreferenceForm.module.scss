@@ -1,1 +1,30 @@
+@import '../../styles/pallate.module.scss';
 
+
+.businessPreferencesFormContainer {
+  .businessPreferencesFormTitle {
+    font-family: 'Familjen Grotesk';
+    font-size: 24px;
+    padding-bottom: 16px;
+  }
+
+  .businessPreferencesFormText {
+    font-family: 'Familjen Grotesk';
+    font-size: 16px;
+    color: map-get($grey-palette, 500);
+    padding-bottom: 40px;
+  }
+
+  .businessPreferencesFormSelection {
+    z-index: 10;
+    max-height: 100px;
+  }
+
+  .businessPreferenceFormUnits {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Equal width columns for three divs */
+    grid-gap: 16px; /* Add some gap between the divs */
+    max-height: 100px;
+    padding-top: 24px;
+  }
+}

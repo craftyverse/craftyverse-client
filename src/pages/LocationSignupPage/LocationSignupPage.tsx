@@ -52,20 +52,26 @@ export const LocationSignupPage: React.FC = () => {
       return { ...prev, ...fields };
     });
   };
-  const { steps, currentStepIndex, currentStep, isFirstStep, isLastStep, previousStep, nextStep } = useCreateLocationForm([
-    <BusinessNameForm
-      locationNameErrorMsg={submitInputErrMsg}
-      userName={`${authenticatedUser?.currentUser?.userFirstName}`}
-      {...locationData}
-      updateLocationData={updateLocationData}
-    />,
-    <BusinessBasicInfoForm submitFormErrorMsg={submitInputErrMsg} {...locationData} updateLocationData={updateLocationData} />,
-    <BusinessPreferencesForm />,
-    <div>
-      <p>Hii from step 4</p>
-    </div>,
-    <div>Hii from step 5</div>,
-  ]);
+
+  const { steps, currentStepIndex, currentStep, isFirstStep, isLastStep, previousStep, nextStep } =
+    useCreateLocationForm([
+      <BusinessNameForm
+        locationNameErrorMsg={submitInputErrMsg}
+        userName={`${authenticatedUser?.currentUser?.userFirstName}`}
+        {...locationData}
+        updateLocationData={updateLocationData}
+      />,
+      <BusinessBasicInfoForm
+        submitFormErrorMsg={submitInputErrMsg}
+        {...locationData}
+        updateLocationData={updateLocationData}
+      />,
+      <BusinessPreferencesForm />,
+      <div>
+        <p>Hii from step 4</p>
+      </div>,
+      <div>Hii from step 5</div>,
+    ]);
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
@@ -136,7 +142,14 @@ export const LocationSignupPage: React.FC = () => {
       setSubmitInputErrorMsg('');
       nextStep();
     }
+
+    if (currentStepIndex === 2) {
+      setSubmitInputErrorMsg('');
+      nextStep();
+    }
   };
+
+  useEffect(() => {}, [{ ...locationData }]);
 
   return (
     <div className={styles.locationSignupContainer}>
@@ -145,7 +158,11 @@ export const LocationSignupPage: React.FC = () => {
           <div className={styles.locationSignupFormLogoContainer}>
             <h1> Craftyverse</h1>
           </div>
-          <div>{currentStepIndex + 1 && <ProgressBar progressStage={`${(100 / steps.length - 1) * (currentStepIndex + 1)}%`} />}</div>
+          <div>
+            {currentStepIndex + 1 && (
+              <ProgressBar progressStage={`${(100 / steps.length - 1) * (currentStepIndex + 1)}%`} />
+            )}
+          </div>
 
           <form onSubmit={handleSubmit} className={styles.locationSignupFormContent}>
             {currentStep}
@@ -162,8 +179,6 @@ export const LocationSignupPage: React.FC = () => {
           </form>
         </div>
       </div>
-      {/* {locationData.locationName}
-      {locationData.locationLegalAddressLine1} */}
     </div>
   );
 };

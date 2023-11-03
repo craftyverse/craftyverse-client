@@ -38,7 +38,7 @@ export const BusinessNameForm: React.FC<BusinessNameFormProps> = ({ userName, lo
   };
 
   return (
-    <div className={styles.businessNameFormContainer}>
+    <div data-testid="business-name-component" className={styles.businessNameFormContainer}>
       <p>We are very excited to have you here {userName}! Let's start off by telling us your business name.</p>
       <Input
         type={'text'}

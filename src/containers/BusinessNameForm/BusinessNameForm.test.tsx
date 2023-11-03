@@ -1,34 +1,43 @@
-import { render, screen } from '@testing-library/react';
+import { getByTestId, render, screen } from '@testing-library/react';
 import { BusinessNameForm } from './BusinessNameForm';
 
 describe('BusinessNameForm component', () => {
-  it('should render the subheading text', () => {
+  it('should render the component and render ', () => {
     render(
       <BusinessNameForm
         userName="Tony"
-        inputErrorMsg="Please enter your business name"
-        setBusinessNameInput={() => {
-          return;
-        }}
+        locationNameErrorMsg=""
+        updateLocationData={() => {}}
+        locationName={''}
       />
     );
-    const subheadingText = screen.getByText(
-      "We are very excited to have you here Tony! Let's start off by telling us your business name."
-    );
-    expect(subheadingText).toBeInTheDocument();
+    const businessNameFormComponent = screen.getByTestId('business-name-component');
+    expect(businessNameFormComponent).toBeInTheDocument();
   });
 
-  it('should render the input label name "Your Business Name".', () => {
+  it('should render an input field', () => {
     render(
       <BusinessNameForm
         userName="Tony"
-        inputErrorMsg="Please enter your business name"
-        setBusinessNameInput={() => {
-          return;
-        }}
+        locationNameErrorMsg=""
+        updateLocationData={() => {}}
+        locationName={''}
       />
     );
-    const businessNameLabelName = screen.getByText('Your Business Name');
-    expect(businessNameLabelName).toBeInTheDocument();
+    const businessNameInput = screen.getByPlaceholderText('Business Name');
+    expect(businessNameInput).toBeInTheDocument();
+  });
+
+  it('should render an input field with a label', () => {
+    render(
+      <BusinessNameForm
+        userName="Tony"
+        locationNameErrorMsg=""
+        updateLocationData={() => {}}
+        locationName={''}
+      />
+    );
+    const businessNameInput = screen.getByText('Your Business Name');
+    expect(businessNameInput).toBeInTheDocument();
   });
 });

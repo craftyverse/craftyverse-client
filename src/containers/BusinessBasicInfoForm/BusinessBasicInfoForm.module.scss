@@ -1,4 +1,5 @@
 @import '../../styles/pallate.module.scss';
+
 .businesBasicInfoFormContainer {
   .businessBasicInfoFormTitle {
     font-family: 'Familjen Grotesk';
@@ -16,5 +17,6 @@
     display: grid;
     grid-template-columns: 1.4fr 1fr 1fr; /* Equal width columns for three divs */
     grid-gap: 16px; /* Add some gap between the divs */
+    max-height: 100px;
   }
 }
